@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Identité — Éclore by Émeline</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose:        #C85A7E;
+    --rose-light:  #F5D6E3;
+    --rose-pale:   #FDF0F5;
+    --rose-dark:   #8B3A57;
+    --beige:       #F7F2EC;
+    --beige-dark:  #E8DDD3;
+    --sage:        #7A9E85;
+    --sage-light:  #EBF2EC;
+    --gold:        #C4964A;
+    --ink:         #2A1F2D;
+    --ink-soft:    #6B5872;
+    --cream:       #FBF8F5;
+    --white:       #FFFFFF;
+    --radius:      16px;
+    --radius-sm:   10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── ÉCRAN COVER ── */
+  #screen-cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    background: var(--cream);
+  }
+  .cover-moon {
+    font-size: 48px;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .cover-brand {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 1rem;
+  }
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    max-width: 600px;
+  }
+  .cover-title em { font-style: italic; color: var(--rose); }
+  .cover-subtitle {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+  }
+  .cover-divider {
+    width: 40px; height: 2px;
+    background: var(--rose-light);
+    border-radius: 2px;
+    margin: 0 auto 2.5rem;
+  }
+  .cover-promise {
+    background: var(--white);
+    border: 0.5px solid var(--beige-dark);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    max-width: 420px;
+    margin: 0 auto 2rem;
+    text-align: left;
+  }
+  .cover-promise-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.75rem;
+  }
+  .cover-promise-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .cover-promise-dot {
+    width: 6px; height: 6px; min-width: 6px;
+    border-radius: 50%;
+    background: var(--rose);
+    margin-top: 6px;
+  }
+  .cover-author {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+  }
+  .cover-author strong { color: var(--ink); font-weight: 500; }
+  .btn-start {
+    background: var(--rose);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 16px 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: all 0.2s;
+  }
+  .btn-start:hover {
+    background: var(--rose-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200,90,126,0.3);
+  }
+
+  /* ── ÉCRAN INTRO ── */
+  #screen-intro {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    background: var(--white);
+  }
+  .intro-inner { max-width: 560px; width: 100%; }
+  .section-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rose);
+    background: var(--rose-pale);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 1.25rem;
+  }
+  .intro-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 34px);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .intro-title em { font-style: italic; color: var(--rose); }
+  .intro-text {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+  .intro-card {
+    background: var(--beige);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 3px solid var(--rose);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .intro-card p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .intro-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .intro-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .intro-meta-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--rose-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  /* ── ÉCRAN QUIZ ── */
+  #screen-quiz {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1.5rem 4rem;
+    background: var(--cream);
+  }
+  .quiz-inner { max-width: 600px; width: 100%; }
+  .progress-wrap { margin-bottom: 2rem; }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .progress-track {
+    height: 4px;
+    background: var(--rose-light);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--rose);
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .q-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: 0 2px 20px rgba(42,31,45,0.06);
+    animation: fadeUp 0.35s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .q-cat {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 0.6rem;
+  }
+  .q-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(17px, 3vw, 21px);
+    line-height: 1.45;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+  .opt {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px;
+    border: 1.5px solid #EDE4E9;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.18s;
+    background: var(--white);
+  }
+  .opt:hover { border-color: var(--rose); background: var(--rose-pale); }
+  .opt.selected { border-color: var(--rose); background: var(--rose-pale); }
+  .opt-dot {
+    width: 20px; height: 20px; min-width: 20px;
+    border-radius: 50%;
+    border: 2px solid #D4B8C5;
+    margin-top: 1px;
+    transition: all 0.18s;
+    position: relative; flex-shrink: 0;
+  }
+  .opt.selected .opt-dot { border-color: var(--rose); background: var(--rose); }
+  .opt.selected .opt-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: white;
+  }
+  .opt-text { font-size: 14px; line-height: 1.55; color: var(--ink); font-weight: 300; }
+  .opt.selected .opt-text { color: var(--rose); font-weight: 400; }
+  .btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--rose);
+    color: white;
+  }
+  .btn:disabled { background: #E8D5DE; color: #B8A0AC; cursor: not-allowed; }
+  .btn:not(:disabled):hover {
+    background: var(--rose-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(200,90,126,0.3);
+  }
+
+  /* ── ÉCRAN RÉSULTAT ── */
+  #screen-result {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1.5rem 4rem;
+    background: var(--cream);
+  }
+  .result-inner { max-width: 600px; width: 100%; }
+  .result-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: 0 2px 20px rgba(42,31,45,0.06);
+    margin-bottom: 1.25rem;
+    animation: fadeUp 0.4s ease both;
+  }
+  .result-icon {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 1.25rem;
+  }
+  .result-label {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 0.5rem;
+  }
+  .result-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 600;
+    color: var(--ink);
+    text-align: center;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+  .result-intro {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #F0E8EC;
+  }
+  .result-section-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.75rem;
+  }
+  .signal-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
+  .signal-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--ink); line-height: 1.55; }
+  .signal-dot { width: 6px; height: 6px; min-width: 6px; border-radius: 50%; background: var(--rose); margin-top: 7px; }
+  .affirmation {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ink-soft);
+    text-align: center;
+    padding: 1.25rem;
+    border-top: 1px solid #F0E8EC;
+    border-bottom: 1px solid #F0E8EC;
+    margin: 0 0 1.25rem;
+    line-height: 1.5;
+  }
+  .action-box {
+    background: var(--rose-pale);
+    border-left: 3px solid var(--rose);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 1rem 1.25rem;
+  }
+  .action-box p { font-size: 13.5px; color: var(--ink); line-height: 1.65; }
+  .action-box strong { color: var(--rose); font-weight: 500; }
+
+  /* ── ÉCRAN ÉCLORE ── */
+  #screen-eclore {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    background: var(--ink);
+    color: white;
+  }
+  .eclore-inner { max-width: 560px; width: 100%; text-align: center; }
+  .eclore-brand {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rose-light);
+    margin-bottom: 0.75rem;
+  }
+  .eclore-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
+  }
+  .eclore-logo em { font-style: italic; color: var(--rose-light); }
+  .eclore-tagline {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.05em;
+    margin-bottom: 2.5rem;
+  }
+  .eclore-divider {
+    width: 40px; height: 1px;
+    background: rgba(255,255,255,0.2);
+    margin: 0 auto 2.5rem;
+  }
+  .eclore-pitch {
+    font-size: 16px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+  }
+  .eclore-pitch em {
+    font-style: italic;
+    color: var(--rose-light);
+  }
+  .offres-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 2.5rem;
+  }
+  .offre-item {
+    background: rgba(255,255,255,0.07);
+    border: 0.5px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    text-align: left;
+  }
+  .offre-num {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rose-light);
+    margin-bottom: 4px;
+  }
+  .offre-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: white;
+    margin-bottom: 2px;
+  }
+  .offre-name em { font-style: italic; }
+  .offre-desc { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+  .eclore-author {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 2rem;
+  }
+  .eclore-author strong { color: rgba(255,255,255,0.8); font-weight: 500; }
+  .eclore-ig {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--rose);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 13px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    margin-bottom: 1rem;
+  }
+  .eclore-ig:hover { background: var(--rose-dark); transform: translateY(-1px); }
+  .btn-restart {
+    background: transparent;
+    border: 0.5px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.5);
+    border-radius: var(--radius-sm);
+    padding: 11px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: block;
+    margin: 0 auto;
+  }
+  .btn-restart:hover { border-color: rgba(255,255,255,0.4); color: white; }
+</style>
+</head>
+<body>
+
+<!-- ── COVER ── -->
+<div id="screen-cover">
+  <span class="cover-moon">🌸</span>
+  <div class="cover-brand">Éclore · by Émeline</div>
+  <h1 class="cover-title">Et si c'était le moment de <em>te retrouver</em> ?</h1>
+  <p class="cover-subtitle">Un quiz pour comprendre où tu en es vraiment — personnellement et professionnellement — après la naissance de ton bébé.</p>
+  <div class="cover-divider"></div>
+  <div class="cover-promise">
+    <div class="cover-promise-title">Ce que tu vas découvrir</div>
+    <div class="cover-promise-item"><div class="cover-promise-dot"></div><span>Où tu en es avec ton identité aujourd'hui</span></div>
+    <div class="cover-promise-item"><div class="cover-promise-dot"></div><span>Les signaux que tu n'avais peut-être pas nommés</span></div>
+    <div class="cover-promise-item"><div class="cover-promise-dot"></div><span>Un profil personnalisé avec des pistes concrètes</span></div>
+    <div class="cover-promise-item"><div class="cover-promise-dot"></div><span>10 questions · 5 minutes · sans jugement</span></div>
+  </div>
+  <div class="cover-author">Un quiz créé par <strong>Émeline</strong>, révélatrice d'identité post-maternité</div>
+  <button class="btn-start" onclick="goTo('screen-intro')">Je commence →</button>
+</div>
+
+<!-- ── INTRO ── -->
+<div id="screen-intro" style="display:none">
+  <div class="intro-inner">
+    <div class="section-badge">Avant de commencer</div>
+    <h2 class="intro-title">Ce quiz est un espace <em>rien que pour toi</em></h2>
+    <p class="intro-text">
+      Depuis la naissance de ton bébé, tu t'occupes de tout le monde. De lui, de ta famille, de ton quotidien. Mais toi, dans tout ça… quand est-ce que quelqu'un t'a demandé comment tu allais vraiment ?
+    </p>
+    <p class="intro-text">
+      Ce quiz n'a pas de bonne ou mauvaise réponse. Il y a juste ta vérité du moment — et elle mérite d'être entendue.
+    </p>
+    <div class="intro-card">
+      <p>« Tu n'as pas perdu qui tu es. Tu attends juste qu'on te donne la permission de revenir. »</p>
+    </div>
+    <div class="intro-meta">
+      <div class="intro-meta-item">
+        <div class="intro-meta-icon">⏱</div>
+        <span>5 minutes</span>
+      </div>
+      <div class="intro-meta-item">
+        <div class="intro-meta-icon">❓</div>
+        <span>10 questions</span>
+      </div>
+      <div class="intro-meta-item">
+        <div class="intro-meta-icon">🎯</div>
+        <span>4 profils personnalisés</span>
+      </div>
+    </div>
+    <button class="btn" onclick="startQuiz()">C'est parti →</button>
+  </div>
+</div>
+
+<!-- ── QUIZ ── -->
+<div id="screen-quiz" style="display:none">
+  <div class="quiz-inner">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="q-counter">Question 1 sur 10</span>
+        <span id="q-pct">10%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:10%"></div>
+      </div>
+    </div>
+    <div class="q-card" id="q-card">
+      <div class="q-cat" id="q-cat"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+      <button class="btn" id="btn-next" disabled onclick="nextQuestion()">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── RÉSULTAT ── -->
+<div id="screen-result" style="display:none">
+  <div class="result-inner">
+    <div class="result-card">
+      <div class="result-icon" id="r-icon"></div>
+      <div class="result-label" id="r-label"></div>
+      <div class="result-title" id="r-title"></div>
+      <div class="result-intro" id="r-intro"></div>
+      <div class="result-section-title">Ce que ton score révèle</div>
+      <div class="signal-list" id="r-signals"></div>
+      <div class="affirmation" id="r-affirmation"></div>
+      <div class="result-section-title">Par où commencer</div>
+      <div class="action-box" id="r-action"></div>
+    </div>
+    <button class="btn" onclick="goTo('screen-eclore')" style="margin-bottom:0.75rem">Découvrir Éclore →</button>
+    <button class="btn-restart" onclick="restartQuiz()">↩ Refaire le quiz</button>
+  </div>
+</div>
+
+<!-- ── ÉCLORE ── -->
+<div id="screen-eclore" style="display:none">
+  <div class="eclore-inner">
+    <div class="eclore-brand">Découvre</div>
+    <div class="eclore-logo"><em>Éclore</em></div>
+    <div class="eclore-tagline">by Émeline · Révélatrice d'identité post-maternité</div>
+    <div class="eclore-divider"></div>
+    <p class="eclore-pitch">
+      Éclore, c'est l'espace que tu mérites pour <em>renaître à toi-même</em> après la maternité. Pas recommencer à zéro — <em>s'ouvrir, enfin</em>.
+    </p>
+    <div class="offres-grid">
+      <div class="offre-item">
+        <div class="offre-num">01 · Ebook</div>
+        <div class="offre-name">Les <em>Graines</em></div>
+        <div class="offre-desc">Le guide pour poser les premières bases · 27€</div>
+      </div>
+      <div class="offre-item">
+        <div class="offre-num">02 · Programme</div>
+        <div class="offre-name">Les <em>Bourgeons</em></div>
+        <div class="offre-desc">Vidéos en autonomie pour aller plus loin · 147€</div>
+      </div>
+      <div class="offre-item">
+        <div class="offre-num">03 · Accompagnement</div>
+        <div class="offre-name">La <em>Floraison</em></div>
+        <div class="offre-desc">2 mois en individuel avec Émeline · 797€</div>
+      </div>
+      <div class="offre-item">
+        <div class="offre-num">04 · Communauté</div>
+        <div class="offre-name">Le <em>Jardin</em></div>
+        <div class="offre-desc">Le groupe mensuel pour continuer · 37€/mois</div>
+      </div>
+    </div>
+    <div class="eclore-author">Créé par <strong>Émeline</strong> — Éducatrice de jeunes enfants, 10 ans d'expérience, formée à l'hypnose et passionnée de développement personnel depuis 15 ans.</div>
+    <a class="eclore-ig" href="https://instagram.com/emeline.eclore" target="_blank">
+      ✦ Me retrouver sur Instagram
+    </a>
+    <button class="btn-restart" onclick="restartQuiz()">↩ Refaire le quiz depuis le début</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  { cat: "Sphère personnelle", text: "Quand quelqu'un te demande « et toi, ça va vraiment ? », ta première réaction est…",
+    opts: [
+      { text: "De détourner la conversation vers mon bébé ou ma famille", score: 3 },
+      { text: "De répondre « ça va » automatiquement, sans vraiment y penser", score: 3 },
+      { text: "D'hésiter… je ne sais plus vraiment ce que je ressens", score: 2 },
+      { text: "De profiter de l'occasion pour partager ce que je vis vraiment", score: 1 }
+    ]
+  },
+  { cat: "Sphère personnelle", text: "Tes passions, tes envies d'avant la maternité… comment tu en parles aujourd'hui ?",
+    opts: [
+      { text: "Je ne m'en souviens presque plus, c'est si loin", score: 3 },
+      { text: "Je sais ce que j'aimais, mais j'ai l'impression de ne plus y avoir le droit", score: 3 },
+      { text: "Elles me manquent, j'essaie d'en retrouver quelques-unes", score: 2 },
+      { text: "J'en garde une partie dans ma vie, même en version réduite", score: 1 }
+    ]
+  },
+  { cat: "Sphère personnelle", text: "Comment vis-tu les moments seule, sans ton enfant ?",
+    opts: [
+      { text: "Je culpabilise ou je pense à lui tout le temps", score: 3 },
+      { text: "C'est rare, et je ne sais plus vraiment quoi faire de ces moments", score: 2 },
+      { text: "J'en profite, mais avec un fond de culpabilité persistant", score: 2 },
+      { text: "Je les vis avec légèreté, je sais que j'en ai besoin", score: 1 }
+    ]
+  },
+  { cat: "Sphère personnelle", text: "Ta relation avec ton corps depuis l'accouchement, c'est…",
+    opts: [
+      { text: "Je préfère ne pas y penser, ça me fait trop mal", score: 3 },
+      { text: "Je ne me reconnais plus et ça me pèse au quotidien", score: 3 },
+      { text: "C'est compliqué, j'essaie d'être douce avec moi-même", score: 2 },
+      { text: "J'ai appris à l'accepter tel qu'il est maintenant", score: 1 }
+    ]
+  },
+  { cat: "Sphère personnelle", text: "Si tu devais compléter cette phrase : « En dehors d'être maman, je suis… »",
+    opts: [
+      { text: "Je ne sais plus vraiment… la question me paralyse", score: 3 },
+      { text: "J'ai quelques idées, mais elles me semblent floues ou dépassées", score: 2 },
+      { text: "Je commence à retrouver quelques réponses, mais c'est fragile", score: 2 },
+      { text: "J'ai encore une image claire de qui je suis en dehors de ce rôle", score: 1 }
+    ]
+  },
+  { cat: "Sphère professionnelle", text: "Quand tu penses à ta vie professionnelle d'avant ou d'après bébé, tu ressens…",
+    opts: [
+      { text: "Un vide — je ne sais plus ce que je veux ou qui j'étais professionnellement", score: 3 },
+      { text: "De la nostalgie pour ce que j'étais, mais sans envie de revenir en arrière", score: 2 },
+      { text: "Un mélange de culpabilité et d'envie de faire quelque chose qui m'appartient", score: 2 },
+      { text: "Une direction, même floue — j'ai des envies même si elles ne sont pas encore claires", score: 1 }
+    ]
+  },
+  { cat: "Sphère professionnelle", text: "Face aux choix professionnels (reprendre, changer, créer…), tu te sens plutôt…",
+    opts: [
+      { text: "Complètement perdue, paralysée par les options", score: 3 },
+      { text: "Je sais ce que je ne veux plus, mais pas ce que je veux", score: 2 },
+      { text: "J'ai des pistes, mais j'ai du mal à les croire accessibles", score: 2 },
+      { text: "En mouvement — j'explore même si tout n'est pas figé", score: 1 }
+    ]
+  },
+  { cat: "Sphère professionnelle", text: "L'idée de parler de tes compétences ou de te présenter professionnellement aujourd'hui…",
+    opts: [
+      { text: "Me remplit d'angoisse — je n'ai plus l'impression d'avoir de valeur pro", score: 3 },
+      { text: "Est difficile, j'ai l'impression d'avoir tout oublié ou tout perdu", score: 3 },
+      { text: "Est compliquée, mais je sais que c'est dans ma tête", score: 2 },
+      { text: "Est ok — je reconnais mes compétences même si elles évoluent", score: 1 }
+    ]
+  },
+  { cat: "Sphère professionnelle", text: "Quand tu imagines un travail ou un projet qui te correspond vraiment…",
+    opts: [
+      { text: "C'est trop abstrait, je n'arrive même pas à visualiser quelque chose", score: 3 },
+      { text: "J'ai des idées vagues mais je les trouve irréalistes pour moi", score: 2 },
+      { text: "J'ai une image, mais j'ai peur de ne pas en être capable", score: 2 },
+      { text: "J'ai une vision et j'essaie de la construire, même lentement", score: 1 }
+    ]
+  },
+  { cat: "Sphère professionnelle", text: "La conciliation vie pro / vie de maman, c'est un sujet qui…",
+    opts: [
+      { text: "Me semble impossible pour moi — je ne vois pas comment y arriver", score: 3 },
+      { text: "Me fatigue à l'avance — j'ai peur de décevoir partout", score: 2 },
+      { text: "Me motive, même si je n'ai pas encore trouvé mon équilibre", score: 2 },
+      { text: "Est un challenge que j'apprends à apprivoiser à mon rythme", score: 1 }
+    ]
+  }
+];
+
+const profiles = [
+  { min: 10, max: 15, icon: "🌿", iconBg: "#E8F5EE", label: "Profil Ancrage",
+    title: "Tu gardes le fil de toi-même",
+    intro: "Tu traverses la maternité avec une bonne conscience de qui tu es. Ce n'est pas sans effort — mais tu as gardé un fil solide entre toi d'avant et toi d'aujourd'hui. Tu mérites de te faire davantage confiance.",
+    signals: ["Tu arrives encore à nommer tes envies et tes besoins", "Tu te reconnais dans ton rôle de maman sans t'y dissoudre", "Tu conserves une image professionnelle de toi, même si elle évolue"],
+    affirmation: "« La maternité t'a transformée — elle ne t'a pas effacée. »",
+    action: "<strong>Ton prochain pas :</strong> Continue d'explorer qui tu es en train de devenir. L'ebook Les Graines t'aidera à aller encore plus loin dans la connaissance de toi-même."
+  },
+  { min: 16, max: 21, icon: "🌊", iconBg: "#E8F0F8", label: "Profil Transition",
+    title: "Tu es en pleine reconstruction",
+    intro: "Tu navigues dans une zone de flou — ni totalement perdue, ni vraiment retrouvée. C'est la phase la plus inconfortable, mais aussi la plus riche. Quelque chose cherche à émerger en toi.",
+    signals: ["Tu sais ce que tu ne veux plus, mais pas encore ce que tu veux", "Tes anciennes références professionnelles semblent lointaines ou dépassées", "Tu alternes entre élan et doute, entre envie et fatigue"],
+    affirmation: "« Ne pas savoir encore, c'est déjà être en chemin. »",
+    action: "<strong>Ton prochain pas :</strong> Commence par une seule chose — une passion, une habitude, une conversation honnête sur ce que tu veux vraiment. L'ebook Les Graines est fait pour t'y aider."
+  },
+  { min: 22, max: 27, icon: "🔍", iconBg: "#FDF0F5", label: "Profil Recherche",
+    title: "Tu cherches encore où tu en es",
+    intro: "La maternité t'a profondément transformée, et il t'est difficile de te retrouver dans ce nouveau paysage. Tu n'es pas perdue — tu es entre deux versions de toi-même. Et c'est plus courant qu'on ne le dit.",
+    signals: ["Ton identité professionnelle semble floue ou inaccessible en ce moment", "Tu penses souvent aux autres avant de penser à toi", "Tu ressens une tension entre la maman que tu es et la femme que tu étais"],
+    affirmation: "« Se perdre un peu en devenant mère, c'est humain. Se retrouver, ça s'apprend. »",
+    action: "<strong>Ton prochain pas :</strong> Accorde-toi la permission de commencer petit. L'ebook Les Graines va t'aider à démêler ce que tu ressens et à renouer avec tes envies profondes."
+  },
+  { min: 28, max: 30, icon: "🌱", iconBg: "#FDF5EC", label: "Profil Renaissance",
+    title: "Tu as profondément besoin de te retrouver",
+    intro: "Il y a dans tes réponses quelque chose de courageux : tu reconnais que tu t'es perdue, et c'est déjà immense. Beaucoup de mamans restent silencieuses. Toi, tu cherches — et ça change tout.",
+    signals: ["Ton identité s'est effacée derrière le rôle de maman", "Professionnellement, tu te sens en pause forcée ou dans le vide", "Tu ressens une fatigue qui dépasse le manque de sommeil — c'est une fatigue de soi"],
+    affirmation: "« Tu ne t'es pas perdue — tu attends juste qu'on te donne la permission de revenir. »",
+    action: "<strong>Ton prochain pas :</strong> L'accompagnement La Floraison est fait pour toi. 2 mois pour nommer ce que tu traverses, retrouver ce qui compte et construire une vie qui te ressemble."
+  }
+];
+
+let current = 0, answers = [], selectedIdx = null;
+
+function goTo(id) {
+  document.querySelectorAll('body > div').forEach(d => d.style.display = 'none');
+  document.getElementById(id).style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+
+function startQuiz() {
+  goTo('screen-quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const total = questions.length;
+  const pct = Math.round(((current + 1) / total) * 100);
+  document.getElementById('q-counter').textContent = `Question ${current + 1} sur ${total}`;
+  document.getElementById('q-pct').textContent = `${pct}%`;
+  document.getElementById('progress-fill').style.width = `${pct}%`;
+  document.getElementById('q-cat').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.text;
+  const container = document.getElementById('q-options');
+  container.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'opt';
+    div.innerHTML = `<div class="opt-dot"></div><div class="opt-text">${opt.text}</div>`;
+    div.onclick = () => {
+      document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+      div.classList.add('selected');
+      selectedIdx = i;
+      const btn = document.getElementById('btn-next');
+      btn.disabled = false;
+      btn.textContent = current < total - 1 ? 'Suivant →' : 'Voir mon profil →';
+    };
+    container.appendChild(div);
+  });
+  selectedIdx = null;
+  const btn = document.getElementById('btn-next');
+  btn.disabled = true;
+  btn.textContent = 'Suivant →';
+  const card = document.getElementById('q-card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeUp 0.35s ease both';
+}
+
+function nextQuestion() {
+  if (selectedIdx === null) return;
+  answers.push(questions[current].opts[selectedIdx].score);
+  if (current < questions.length - 1) { current++; renderQuestion(); }
+  else showResult();
+}
+
+function showResult() {
+  const total = answers.reduce((a, b) => a + b, 0);
+  const profile = profiles.find(p => total >= p.min && total <= p.max) || profiles[profiles.length - 1];
+  goTo('screen-result');
+  document.getElementById('r-icon').textContent = profile.icon;
+  document.getElementById('r-icon').style.background = profile.iconBg;
+  document.getElementById('r-label').textContent = profile.label;
+  document.getElementById('r-title').textContent = profile.title;
+  document.getElementById('r-intro').textContent = profile.intro;
+  document.getElementById('r-affirmation').textContent = profile.affirmation;
+  document.getElementById('r-action').innerHTML = profile.action;
+  document.getElementById('r-signals').innerHTML = profile.signals.map(s =>
+    `<div class="signal-item"><div class="signal-dot"></div><span>${s}</span></div>`
+  ).join('');
+}
+
+function restartQuiz() {
+  current = 0; answers = []; selectedIdx = null;
+  goTo('screen-cover');
+}
+</script>
+</body>
+</html>
